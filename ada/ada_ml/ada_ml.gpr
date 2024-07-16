@@ -1,5 +1,5 @@
 with "config/ada_ml_config.gpr";
-project Ada_Ml is
+project Ada_ML is
 
    for Source_Dirs use
      (
@@ -30,4 +30,4 @@ project Ada_Ml is
       for Artifacts (".") use ("share");
    end Install;
 
-end Ada_Ml;
+end Ada_ML;
