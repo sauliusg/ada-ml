@@ -1,0 +1,10 @@
+name = "ada_ml"
+description = ""
+version = "0.1.0-dev"
+
+authors = ["Saulius Gražulis"]
+maintainers = ["Saulius Gražulis <grazulis@ibt.lt>"]
+maintainers-logins = ["github-username"]
+licenses = "GPL-3.0-or-later"
+website = ""
+tags = []
