@@ -107,11 +107,16 @@ package body ONNX_Runtime.Sessions is
         Interfaces.C.Strings.chars_ptr;
 
       Inputs     : array (Input'Range) of aliased access
-        ONNX_Runtime.C_API.OrtValue := [for X of Input => X.Internal];
+        -- ONNX_Runtime.C_API.OrtValue := [for X of Input => X.Internal];
+        ONNX_Runtime.C_API.OrtValue := [others => null];
 
       Outputs    : array (Output'Range) of aliased
         ONNX_Runtime.Values.OrtValue_Access := [others => null];
    begin
+      for I in Input'Range loop
+         Inputs (I) := Input (I).Internal;
+      end loop;
+
       pragma Assert (Input'Length = Get_Input_Count);
       pragma Assert (Output'Length = Get_Output_Count);
 
