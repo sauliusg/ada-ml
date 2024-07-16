@@ -1,4 +1,5 @@
 with "config/ada_ml_config.gpr";
+with "ada_ml_linker.gpr";
 project Ada_ML is
 
    for Source_Dirs use
@@ -17,10 +18,6 @@ project Ada_ML is
    package Compiler is
       for Default_Switches ("Ada") use Ada_Ml_Config.Ada_Compiler_Switches;
    end Compiler;
-
-   package Linker is
-      for Linker_Options use ("-lonnxruntime");
-   end Linker;
 
    package Binder is
       for Switches ("Ada") use ("-Es"); --  Symbolic traceback

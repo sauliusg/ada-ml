@@ -4,6 +4,8 @@ with ONNX_Runtime.Environments;
 with ONNX_Runtime.Sessions;
 with ONNX_Runtime.Values;
 
+with PNM_Reader;
+
 procedure Ada_Ml is
    o : constant Float := 0.0;
    X : constant Float := 1.0;

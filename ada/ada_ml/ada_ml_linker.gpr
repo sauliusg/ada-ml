@@ -1,0 +1,9 @@
+project Ada_ML_Linker is
+
+   for Source_Dirs use ();
+
+   package Linker is
+      for Linker_Options use ("-lonnxruntime");
+   end Linker;
+
+end Ada_ML_Linker;

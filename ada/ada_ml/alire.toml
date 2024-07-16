@@ -8,3 +8,5 @@ maintainers-logins = ["github-username"]
 licenses = "GPL-3.0-or-later"
 website = ""
 tags = []
+
+executables = ["ada_ml"]
