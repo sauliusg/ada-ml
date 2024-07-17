@@ -42,10 +42,10 @@ begin
          declare
             Dimension : MNIST_Dataset_Record_Type;
             function To_DWord (W : MNIST_Dataset_Record_Type) return DWord is
-               R : DWord := DWord (W.Value (1));
+               R : DWord := 0;
             begin
-               for I in 2 .. 4 loop
-                  R := R * 256 + DWord (W.Value (I));
+               for I in 1 .. 4 loop
+                  R := R * 256 + DWord ((W.Value / (256 ** (I - 1))) and 255);
                end loop;
                return R;
             end;
