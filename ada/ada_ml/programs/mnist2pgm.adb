@@ -13,22 +13,41 @@ procedure MNIST2PGM is
    Header : MNIST_Dataset_Header_Type;
    File   : Ada.Streams.Stream_IO.File_Type;
    
+   Start : Long_Integer := 1;
+   Finish : Long_Integer := 0;
+   
+   First_File_Argument : Integer := 1;
+   
 begin
-   for I in 1 .. Argument_Count loop
-      Open (File, In_File, Argument (I));      
+   if Argument_Count > 1 then
+      Start := Long_Integer'Value (Argument (1));
+      First_File_Argument := 2;
+   end if;
+   
+   if Argument_Count > 2 then
+      Finish := Long_Integer'Value (Argument (2));
+      First_File_Argument := 3;
+   end if;
+   
+   for I in FIrst_File_Argument .. Argument_Count loop
+      Open (File, In_File, Argument (I));
       
       Get_Header (File, Header);
       
       declare
          Dimensions : MNIST_Dataset_Dimension_Array (1 .. Integer (Header.NDim));
+         Image_Length : Positive := 1;
          Image_Size : Positive := 1;
+         Element_Size : constant Positive := 1;
       begin
          Get_Dimensions (File, Dimensions);
          
          for I in 2 .. Header.NDim loop
-            Image_Size := Image_Size * Positive (Dimensions (Integer (I)));
+            Image_Length := Image_Length * Positive (Dimensions (Integer (I)));
          end loop;
-      
+         
+         Image_Size := Image_Length * Element_Size;
+         
          declare
             type MNIST_Record_Raster is array (Positive range <>) of Byte;
 
@@ -65,11 +84,27 @@ begin
                end loop;
             end;
             
-            Input  : Stream_Access := Stream (File);
+            Input  : constant Stream_Access := Stream (File);
+            Current : Long_Integer := Start;
 
          begin
-            MNIST_Record_Raster'Read (Input, MNIST_Record);
-            Put_Record_As_PNG (MNIST_Record);
+            if Start /= 1 then
+               Set_Index (File, Index (File) + 
+                            Ada.Streams.Stream_IO.Positive_Count
+                            (
+                             (Start - 1) * Long_Integer (Image_Size)
+                            )
+                         );
+            end if;
+            
+            while
+              (Finish = 0 and then not End_Of_File (File)) or else
+              Current <= Finish
+            loop
+               MNIST_Record_Raster'Read (Input, MNIST_Record);
+               Put_Record_As_PNG (MNIST_Record);
+               Current := Current + 1;
+            end loop;
          end;
       end;
       
