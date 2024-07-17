@@ -26,20 +26,7 @@ begin
       Put_Line ("NDim  : " & Header.NDim'Image);
       
       declare
-         type MNIST_Dataset_Dimension_Array is array (1 .. Header.NDim) of
-           MNIST_Dataset_Record_Type;
-           
-         Dimensions : MNIST_Dataset_Dimension_Array;
-         
-         function To_DWord (W : MNIST_Dataset_Record_Type) return DWord is
-            R : DWord := 0;
-         begin
-            for I in 1 .. 4 loop
-               R := R * 256 + DWord ((W / (256 ** (I - 1))) and 255);
-            end loop;
-            return R;
-         end;
- 
+         Dimensions : MNIST_Dataset_Dimension_Array (1 .. Integer (Header.NDim));
       begin
          MNIST_Dataset_Dimension_Array'Read (Input, Dimensions);
          for I in Dimensions'Range loop
