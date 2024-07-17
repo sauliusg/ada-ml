@@ -107,6 +107,7 @@ begin
             Put ("Probabilities: ");
             for J in Probability'Range loop
                Put (Probability (J), 4, 4, 0);
+               Put (" ");
             end loop;
             New_Line;
          end;
