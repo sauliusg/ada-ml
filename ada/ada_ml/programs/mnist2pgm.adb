@@ -85,17 +85,22 @@ begin
             end;
             
             Input  : constant Stream_Access := Stream (File);
-            Current : Long_Integer := Start;
+            Current : Long_Integer := 1;
 
          begin
-            if Start /= 1 then
-               Set_Index (File, Index (File) + 
-                            Ada.Streams.Stream_IO.Positive_Count
-                            (
-                             (Start - 1) * Long_Integer (Image_Size)
-                            )
-                         );
-            end if;
+            -- if Start /= 1 then
+            --    Set_Index (File, Index (File) + 
+            --                 Ada.Streams.Stream_IO.Positive_Count
+            --                 (
+            --                  (Start - 1) * Long_Integer (Image_Size)
+            --                 )
+            --              );
+            -- end if;
+            
+            while Current < Start loop
+               MNIST_Record_Raster'Read (Input, MNIST_Record);
+               Current := Current + 1;
+            end loop;
             
             while
               (Finish = 0 and then not End_Of_File (File)) or else
