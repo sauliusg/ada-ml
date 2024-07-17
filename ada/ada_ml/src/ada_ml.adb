@@ -1,8 +1,9 @@
 pragma Ada_2022;
 
-with Ada.Text_IO;      use Ada.Text_IO;
-with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Exceptions;   use Ada.Exceptions;
+with Ada.Text_IO;       use Ada.Text_IO;
+with Ada.Float_Text_IO; use Ada.Float_Text_IO;
+with Ada.Command_Line;  use Ada.Command_Line;
+with Ada.Exceptions;    use Ada.Exceptions;
 
 with ONNX_Runtime.Environments;
 with ONNX_Runtime.Sessions;
@@ -94,14 +95,20 @@ begin
          begin
             Session.Run (Input, Output);
             Output (1).Get_Data (Probability);
-
+            
+            Max := Probability'First;
             for J in Probability'Range loop
                if Probability (Max) < Probability (J) then
                   Max := J;
                end if;
             end loop;
 
-            Ada.Text_IO.Put_Line ("Result:" & Max'Image);
+            Put ("Result:" & Max'Image & " ");
+            Put ("Probabilities: ");
+            for J in Probability'Range loop
+               Put (Probability (J), 4, 4, 0);
+            end loop;
+            New_Line;
          end;
 
       end loop;
