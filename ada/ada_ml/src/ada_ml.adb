@@ -72,8 +72,7 @@ begin
    declare
       Session : ONNX_Runtime.Sessions.Session :=
         Env.Create_Session (Model => Model_File_Name);
-      --  https://github.com/microsoft/onnxruntime-inference-examples/
-      --  raw/main/c_cxx/MNIST/mnist.onnx
+      --  https://github.com/microsoft/onnxruntime-inference-examples/raw/main/c_cxx/MNIST/mnist.onnx
       PNM_Image : PNM_Image_Type;
    begin
 
