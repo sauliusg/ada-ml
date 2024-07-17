@@ -39,12 +39,24 @@ begin
                R : MNIST_Record_Raster
               ) is
                K : Natural := R'First;
+               D1 : Integer := 1;
+               D2 : Integer := 1;
             begin
+               if Dimensions'Length > 1 then
+                  D1 := Integer (Dimensions (2));
+               end if;
+               
+               if Dimensions'Length > 2 then
+                  for DI in 3 .. Dimensions'Last loop
+                     D2 := D2 * Integer (Dimensions (DI));
+                  end loop;
+               end if;
+               
                Put_Line ("P2");
-               Put_Line (Dimensions (2)'Image & " " & Dimensions (3)'Image);
+               Put_Line (D2'Image & " " & D1'Image);
                Put_Line ("255");
-               for I in 1 .. Dimensions (2) loop
-                  for I in 1 .. Dimensions (3) loop
+               for I in 1 .. D1 loop
+                  for I in 1 .. D2 loop
                      Put (Integer (R (K)), 4);
                      Put (" ");
                      K := K + 1;
