@@ -1,3 +1,5 @@
+with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
+
 package body MNIST_Reader is
 
    pragma Style_Checks (Off);

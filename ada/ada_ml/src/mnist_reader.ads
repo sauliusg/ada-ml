@@ -1,4 +1,4 @@
-with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
+with Ada.Text_IO;              use Ada.Text_IO;
 
 package MNIST_Reader is
 

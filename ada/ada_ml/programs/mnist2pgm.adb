@@ -1,17 +1,17 @@
 pragma Ada_2022;
 
-with Ada.Text_IO;           use Ada.Text_IO;
-with Ada.Integer_Text_IO;   use Ada.Integer_Text_IO;
-with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
-with Ada.Command_Line;      use Ada.Command_Line;
-with MNIST_Reader;          use MNIST_Reader;
+with Ada.Text_IO;              use Ada.Text_IO;
+with Ada.Integer_Text_IO;      use Ada.Integer_Text_IO;
+with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
+with Ada.Command_Line;         use Ada.Command_Line;
+with MNIST_Reader;             use MNIST_Reader;
 
 procedure MNIST2PGM is
 
    pragma Style_Checks (Off);
    
    Header : MNIST_Dataset_Header_Type;
-   File   : Ada.Streams.Stream_IO.File_Type;
+   File   : File_Type;
    
    Start : Long_Integer := 1;
    Finish : Long_Integer := 0;
