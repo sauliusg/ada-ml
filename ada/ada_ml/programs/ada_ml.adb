@@ -74,43 +74,50 @@ begin
         Env.Create_Session (Model => Model_File_Name);
       --  https://github.com/microsoft/onnxruntime-inference-examples/raw/main/c_cxx/MNIST/mnist.onnx
       PNM_Image : PNM_Image_Type;
+      File : File_Type;
    begin
 
       for I in 2 .. Argument_Count loop
          
-         Load_Raster (Argument (I), PNM_Image);
+         Open (File, In_File, Argument (I));
          
-         declare
-            Input : constant ONNX_Runtime.Values.Value_Array (1 .. 1) :=
-              (1 => ONNX_Runtime.Values.Create_Tensor
-                 (
-                  PNM_Raster_To_Array (PNM_Image),
-                  (1, 1,
-                   Element_Index (PNM_Image.Raster.N),
-                   Element_Index (PNM_Image.Raster.M)
-                  )
-                 )
-              );
-         begin
-            Session.Run (Input, Output);
-            Output (1).Get_Data (Probability);
+         while not End_Of_File (File) loop
+            Load_Raster (File, PNM_Image);
+         
+            declare
+               Input : constant ONNX_Runtime.Values.Value_Array (1 .. 1) :=
+                 (1 => ONNX_Runtime.Values.Create_Tensor
+                    (
+                     PNM_Raster_To_Array (PNM_Image),
+                     (1, 1,
+                      Element_Index (PNM_Image.Raster.N),
+                      Element_Index (PNM_Image.Raster.M)
+                     )
+                    )
+                 );
+            begin
+               Session.Run (Input, Output);
+               Output (1).Get_Data (Probability);
             
-            Max := Probability'First;
-            for J in Probability'Range loop
-               if Probability (Max) < Probability (J) then
-                  Max := J;
-               end if;
-            end loop;
+               Max := Probability'First;
+               for J in Probability'Range loop
+                  if Probability (Max) < Probability (J) then
+                     Max := J;
+                  end if;
+               end loop;
 
-            Put ("Result:" & Max'Image & " ");
-            Put ("Probabilities: ");
-            for J in Probability'Range loop
-               Put (Probability (J), 4, 4, 0);
-               Put (" ");
-            end loop;
-            New_Line;
-         end;
-
+               Put ("Result:" & Max'Image & " ");
+               Put ("Probabilities: ");
+               for J in Probability'Range loop
+                  Put (Probability (J), 4, 4, 0);
+                  Put (" ");
+               end loop;
+               New_Line;
+            end;
+         end loop;
+         
+         Close (File);
+         
       end loop;
       
    end;
