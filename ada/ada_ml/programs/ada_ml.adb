@@ -1,15 +1,22 @@
 pragma Ada_2022;
 
-with Ada.Text_IO;       use Ada.Text_IO;
-with Ada.Float_Text_IO; use Ada.Float_Text_IO;
-with Ada.Command_Line;  use Ada.Command_Line;
-with Ada.Exceptions;    use Ada.Exceptions;
+with Ada.Text_IO;         use Ada.Text_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
+with Ada.Command_Line;    use Ada.Command_Line;
+with Ada.Exceptions;      use Ada.Exceptions;
+
+with Ada.Numerics.Elementary_Functions;
+use Ada.Numerics.Elementary_Functions;
 
 with ONNX_Runtime.Environments;
 with ONNX_Runtime.Sessions;
 with ONNX_Runtime.Values; use ONNX_Runtime.Values;
 
 with PNM_Reader;
+
+with Ada.Environment_Variables;
+with Ada.Characters.Handling;
 
 procedure Ada_Ml is
 
@@ -20,6 +27,8 @@ procedure Ada_Ml is
    package PNM_16bit_Reader is new PNM_Reader (PNM_16bin_Pixel);
    
    use PNM_16bit_Reader;
+   
+   package OS_Environment renames Ada.Environment_Variables;
    
    -- -------------------------------------------------------------------------
    
@@ -60,7 +69,34 @@ procedure Ada_Ml is
    
    Model_File_Name : constant String :=
      (if Argument_Count > 0 then Argument (1) else "");
-   
+     
+   -- -------------------------------------------------------------------------
+     
+   procedure Put_PNM_Image (Image : PNM_Image_Type) is
+      Log_Max : Float;
+      N_Digits : Integer;
+   begin
+      Put_Line ("P2");
+      Put_Line ("# " & Image.Format'Image (1 .. 2));
+      Put (Image.Raster.M, 0);
+      Put (" ");
+      Put (Image.Raster.N, 0);
+      New_Line;
+      Put (Image.MaxVal, 0);
+      New_Line;
+      
+      Log_Max := Log (Float (Image.MaxVal), Base => 10.0);
+      N_Digits := Integer (Log_Max) + 1;
+      -- Put_Line (">>> " & N_Digits'Image);
+
+      for I in Image.Raster.Pixels'Range (1) loop
+         for J in Image.Raster.Pixels'Range (2) loop
+            Put (Integer (Image.Raster.Pixels (I, J)), N_Digits + 1);
+         end loop;
+         New_Line;
+      end loop;
+   end;
+     
 begin
    
    if Argument_Count = 0 then
@@ -83,6 +119,15 @@ begin
          
          while not End_Of_File (File) loop
             Load_Raster (File, PNM_Image);
+            if OS_Environment.Exists ("ADA_ML_DUMP_IMAGE") and then
+              (
+               OS_Environment.Value ("ADA_ML_DUMP_IMAGE") = "1" or else
+                 Ada.Characters.Handling.To_Lower
+                 (OS_Environment.Value ("ADA_ML_DUMP_IMAGE")) = "true"
+              )
+            then
+               Put_PNM_Image (PNM_Image);
+            end if;
          
             declare
                Input : constant ONNX_Runtime.Values.Value_Array (1 .. 1) :=
