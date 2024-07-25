@@ -1,0 +1,1 @@
+  636  curl -sSL --fail https://github.com/microsoft/onnxruntime-inference-examples/raw/main/c_cxx/MNIST/mnist.onnx > data/models/mnist.onnx
