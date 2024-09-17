@@ -1,1 +1,1 @@
-  651  ( set -x; directory-metadata; (echo 2 $(tail -n +2 nodes.csv | wc -l); csv2tab nodes.csv | tail -n +2 | awk -F'\t' '{print $1, $2}') > nodes-idx-vs-id.dat ) 2>&1 | tee nodes-idx-vs-id.dat.log
+  691  ( set -x; directory-metadata; csv2tab nodes.csv | tail -n +2 | awk -F'\t' '{print $1, $2}' > nodes-idx-vs-id.dat ) 2>&1 | tee nodes-idx-vs-id.dat.log
