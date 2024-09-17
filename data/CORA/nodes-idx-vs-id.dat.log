@@ -1,0 +1,41 @@
++ directory-metadata
++ whoami
+saulius
++ hostname -f
+pterodaktilis
++ pwd
+/home/saulius/src/ada-ml/data/CORA
++ set +x
++ svnversion
+41
++ svn info
+Path: .
+Working Copy Root Path: /home/saulius/src/ada-ml
+URL: svn+ssh://saulius.grazulis.lt/home/saulius/svn-repositories/ada-ml/trunk/data/CORA
+Relative URL: ^/trunk/data/CORA
+Repository Root: svn+ssh://saulius.grazulis.lt/home/saulius/svn-repositories/ada-ml
+Repository UUID: cbc6df6a-4905-47e4-957a-ae58ab66f2a2
+Revision: 41
+Node Kind: directory
+Schedule: normal
+Last Changed Author: saulius
+Last Changed Rev: 41
+Last Changed Date: 2024-09-17 17:05:03 +0300 (Tue, 17 Sep 2024)
+
++ df -h .
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/vgmint-root  1,8T  922G  817G  54% /
++ type osname
+osname is /home/saulius/scripts/osname
++ osname
+Linuxmint-21.2
++ uname -a
+Linux pterodaktilis 5.15.0-122-generic #132-Ubuntu SMP Thu Aug 29 13:45:52 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
++ date
+2024-09-17T17:33:58 EEST
+++ tail -n +2 nodes.csv
+++ wc -l
++ echo 2 2708
++ csv2tab nodes.csv
++ tail -n +2
++ awk '-F\t' '{print $1, $2}'
