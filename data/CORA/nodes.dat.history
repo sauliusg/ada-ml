@@ -1,0 +1,1 @@
+  673  ( set -x; directory-metadata; csv2tab nodes.csv | tail -n +2 | awk -F'\t' '{print $NF}' | perl -pe 's/\[/ /; s/[,\]]//g' > nodes.tmp; echo $(wc -l < nodes.tmp) $(head -1 nodes.tmp | awk '{print NF}') > nodes.dat; cat nodes.tmp >> nodes.dat; rm -v nodes.tmp ) 2>&1 | tee nodes.dat.log
