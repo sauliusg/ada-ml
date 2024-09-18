@@ -117,9 +117,6 @@ begin
         Load_Data_Table (Argument (3), Edge_Count);
    begin
 
-      Open (Node_File, In_File, Argument (2));
-      Open (Edge_File, In_File, Argument (3));
-         
       declare
          Input : constant ONNX_Runtime.Values.Value_Array (1 .. 2) :=
            [1 => ONNX_Runtime.Values.Create_Tensor
@@ -150,9 +147,6 @@ begin
       Free (Node_Tensor);
       Free (Edge_Tensor);
       
-      Close (Node_File);
-      Close (Edge_File);
-         
    end;
    
 exception
