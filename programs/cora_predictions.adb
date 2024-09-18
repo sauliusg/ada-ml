@@ -15,6 +15,8 @@ with ONNX_Runtime.Values; use ONNX_Runtime.Values;
 
 with Ada.Environment_Variables;
 
+with Ada.Unchecked_Deallocation;
+
 procedure Cora_Predictions is
 
    pragma Style_Checks (Off);
@@ -42,6 +44,43 @@ procedure Cora_Predictions is
      
    -- -------------------------------------------------------------------------
      
+   type ONNX_Float_Array_Access is access ONNX_Runtime.Values.Float_Array;
+   
+   procedure Free is new Ada.Unchecked_Deallocation
+     (ONNX_Runtime.Values.Float_Array, ONNX_Float_Array_Access);
+   
+   function Load_Data_Table (File_Name : String) 
+                            return ONNX_Float_Array_Access
+   is
+      N, M : Natural;
+      Table_File : File_Type;
+   begin
+      Open (Table_File, In_File, File_Name);
+      
+      Get (Table_File, N);
+      Get (Table_File, M);
+      
+      Put_Line (Standard_Error, ">>> " & N'Image);
+      Put_Line (Standard_Error, ">>> " & M'Image);
+      
+      declare
+         Table_Size : constant Element_Index := Element_Index (N * M);
+         T : ONNX_Float_Array_Access := 
+           new ONNX_Runtime.Values.Float_Array (1 .. Table_Size);
+      begin
+         for I in 1 .. Table_Size loop
+            Get (Table_File, T (I));
+         end loop;
+         
+         Put_Line (Standard_Error, ">>> T(1): " & T(1)'Image);
+         Put_Line (Standard_Error, ">>> T(N): " & T(Table_Size)'Image);
+         New_Line (Standard_Error);
+         
+         Close (Table_File);
+         return T;
+      end;
+   end;
+   
 begin
    
    if Argument_Count = 0 then
@@ -62,8 +101,12 @@ begin
       Session : ONNX_Runtime.Sessions.Session :=
         Env.Create_Session (Model => Model_File_Name);
       Node_File, Edge_File : File_Type;
-      -- Node_Tensor, Edge_Tensor : ONNX_Runtime.Values.Float_Array;
-      Node_Tensor, Edge_Tensor : ONNX_Runtime.Values.Float_Array(1..100);
+      
+      Node_Tensor : ONNX_Float_Array_Access :=
+        Load_Data_Table (Argument (2));
+        
+      Edge_Tensor : ONNX_Float_Array_Access :=
+        Load_Data_Table (Argument (3));
    begin
 
       Open (Node_File, In_File, Argument (2));
@@ -73,12 +116,12 @@ begin
          Input : constant ONNX_Runtime.Values.Value_Array (1 .. 2) :=
            [1 => ONNX_Runtime.Values.Create_Tensor
               (
-               Node_Tensor,
+               Node_Tensor.all,
                [1, 1, 100, 1000]
               ),
             2 => ONNX_Runtime.Values.Create_Tensor
               (
-               Edge_Tensor,
+               Edge_Tensor.all,
                [1, 1, 200, 2000]
               )
            ];
@@ -87,6 +130,9 @@ begin
          Session.Run (Input, Output);
          
       end;
+      
+      Free (Node_Tensor);
+      Free (Edge_Tensor);
       
       Close (Node_File);
       Close (Edge_File);
