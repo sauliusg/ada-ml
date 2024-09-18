@@ -73,7 +73,7 @@ procedure Cora_Predictions is
       
       declare
          Table_Size : constant Element_Index := Element_Index (Rows * Columns);
-         T : ONNX_Int64_Array_Access := 
+         T : constant ONNX_Int64_Array_Access := 
            new ONNX_Runtime.Values.Int64_Array (1 .. Table_Size);
       begin
          for I in 1 .. Table_Size loop
