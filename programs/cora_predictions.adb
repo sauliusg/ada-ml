@@ -49,22 +49,26 @@ procedure Cora_Predictions is
    procedure Free is new Ada.Unchecked_Deallocation
      (ONNX_Runtime.Values.Float_Array, ONNX_Float_Array_Access);
    
-   function Load_Data_Table (File_Name : String) 
-                            return ONNX_Float_Array_Access
+   function Load_Data_Table
+     (
+      File_Name : String;
+      Row_Count : out Natural
+     )
+     return ONNX_Float_Array_Access
    is
-      N, M : Natural;
+      Rows, Columns : Natural;
       Table_File : File_Type;
    begin
       Open (Table_File, In_File, File_Name);
       
-      Get (Table_File, N);
-      Get (Table_File, M);
+      Get (Table_File, Rows);
+      Get (Table_File, Columns);
       
-      Put_Line (Standard_Error, ">>> " & N'Image);
-      Put_Line (Standard_Error, ">>> " & M'Image);
+      Put_Line (Standard_Error, ">>> " & Rows'Image);
+      Put_Line (Standard_Error, ">>> " & Columns'Image);
       
       declare
-         Table_Size : constant Element_Index := Element_Index (N * M);
+         Table_Size : constant Element_Index := Element_Index (Rows * Columns);
          T : ONNX_Float_Array_Access := 
            new ONNX_Runtime.Values.Float_Array (1 .. Table_Size);
       begin
@@ -77,6 +81,8 @@ procedure Cora_Predictions is
          New_Line (Standard_Error);
          
          Close (Table_File);
+         
+         Row_Count := Rows;
          return T;
       end;
    end;
@@ -102,11 +108,13 @@ begin
         Env.Create_Session (Model => Model_File_Name);
       Node_File, Edge_File : File_Type;
       
+      Node_Count : Natural;
       Node_Tensor : ONNX_Float_Array_Access :=
-        Load_Data_Table (Argument (2));
-        
+        Load_Data_Table (Argument (2), Node_Count);
+      
+      Edge_Count : Natural;
       Edge_Tensor : ONNX_Float_Array_Access :=
-        Load_Data_Table (Argument (3));
+        Load_Data_Table (Argument (3), Edge_Count);
    begin
 
       Open (Node_File, In_File, Argument (2));
@@ -117,17 +125,26 @@ begin
            [1 => ONNX_Runtime.Values.Create_Tensor
               (
                Node_Tensor.all,
-               [1, 1, 100, 1000]
+               [
+                 1, 1, 
+                 Element_Index (Node_Count),
+                 Element_Index (Node_Tensor.all'Length / Node_Count)
+               ]
               ),
             2 => ONNX_Runtime.Values.Create_Tensor
               (
                Edge_Tensor.all,
-               [1, 1, 200, 2000]
+               [
+                 1, 1,
+                 Element_Index (Edge_Count),
+                 Element_Index (Edge_Tensor.all'Length / Edge_Count)
+               ]
               )
            ];
       begin
          
-         Session.Run (Input, Output);
+         -- Session.Run (Input, Output);
+         null;
          
       end;
       
