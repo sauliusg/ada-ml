@@ -77,6 +77,13 @@ procedure Cora_Predictions is
          end loop;
          
          Put_Line (Standard_Error, ">>> T(1): " & T(1)'Image);
+         for I in T'Range loop
+            if T(I) /= 0.0 then
+               Put_Line (Standard_Error, ">>> First non-zero: " & 
+                           T(I)'Image & " at index " & I'Image);
+               exit;
+            end if;
+         end loop;
          Put_Line (Standard_Error, ">>> T(N): " & T(Table_Size)'Image);
          New_Line (Standard_Error);
          
@@ -116,7 +123,11 @@ begin
       Edge_Tensor : ONNX_Float_Array_Access :=
         Load_Data_Table (Argument (3), Edge_Count);
    begin
-
+      
+      Put_Line (Standard_Error, ">>> Node_Count: " & Node_Count'Image);
+      Put_Line (Standard_Error, ">>> Edge_Count: " & Edge_Count'Image);
+      New_Line (Standard_Error);
+      
       declare
          Input : constant ONNX_Runtime.Values.Value_Array (1 .. 2) :=
            [1 => ONNX_Runtime.Values.Create_Tensor
