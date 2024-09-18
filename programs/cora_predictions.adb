@@ -181,10 +181,10 @@ exception
       Put_Line (Command_Name & ": " & Exception_Message(Exception_Occurence));
       Ada.Command_Line.Set_Exit_Status (No_Data_File_Status);
    
-   when
-     Exception_Occurence : PROGRAM_ERROR =>
-      Put_Line (Command_Name & ": " & "PROGRAM_ERROR, """ &
-                  Exception_Message(Exception_Occurence) & """");
-      Ada.Command_Line.Set_Exit_Status (Program_Error_Status);
+   -- when
+   --   Exception_Occurence : PROGRAM_ERROR =>
+   --    Put_Line (Command_Name & ": " & "PROGRAM_ERROR, """ &
+   --                Exception_Message(Exception_Occurence) & """");
+   --    Ada.Command_Line.Set_Exit_Status (Program_Error_Status);
    
 end Cora_Predictions;
