@@ -125,7 +125,13 @@ begin
    begin
       
       Put_Line (Standard_Error, ">>> Node_Count: " & Node_Count'Image);
+      Put_Line (Standard_Error, ">>> Node Features: " & 
+                  Natural'Image (Node_Tensor.all'Length / Node_Count));
+      New_Line (Standard_Error);
+      
       Put_Line (Standard_Error, ">>> Edge_Count: " & Edge_Count'Image);
+      Put_Line (Standard_Error, ">>> Edge Features: " &
+                  Natural'Image (Edge_Tensor.all'Length / Edge_Count));
       New_Line (Standard_Error);
       
       declare
