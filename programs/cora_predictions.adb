@@ -46,7 +46,7 @@ begin
    
    if Argument_Count = 0 then
       raise NO_MODEL_PROVIDED with
-        "a model file name must be provided " &
+        "a model file (an *.onnx file) name must be provided " &
         "as the first command line argument";
    end if;
    
