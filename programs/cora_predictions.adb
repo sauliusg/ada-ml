@@ -1,10 +1,12 @@
 pragma Ada_2022;
 
-with Ada.Text_IO;         use Ada.Text_IO;
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
-with Ada.Command_Line;    use Ada.Command_Line;
-with Ada.Exceptions;      use Ada.Exceptions;
+with Ada.Text_IO;              use Ada.Text_IO;
+with Ada.Integer_Text_IO;      use Ada.Integer_Text_IO;
+with Ada.Long_Integer_Text_IO; use Ada.Long_Integer_Text_IO;
+with Ada.Float_Text_IO;        use Ada.Float_Text_IO;
+with Ada.Command_Line;         use Ada.Command_Line;
+with Ada.Exceptions;           use Ada.Exceptions;
+with Interfaces;               use Interfaces;
 
 with Ada.Numerics.Elementary_Functions;
 use Ada.Numerics.Elementary_Functions;
@@ -30,7 +32,7 @@ procedure Cora_Predictions is
 
    Output : ONNX_Runtime.Values.Value_Array (1 .. 1);
 
-   Node_Predictions : ONNX_Runtime.Values.Float_Array (0 .. 7);
+   Node_Predictions : ONNX_Runtime.Values.Int64_Array (0 .. 7);
    
    -- -------------------------------------------------------------------------
    
@@ -46,17 +48,17 @@ procedure Cora_Predictions is
      
    -- -------------------------------------------------------------------------
      
-   type ONNX_Float_Array_Access is access ONNX_Runtime.Values.Float_Array;
+   type ONNX_Int64_Array_Access is access ONNX_Runtime.Values.Int64_Array;
    
    procedure Free is new Ada.Unchecked_Deallocation
-     (ONNX_Runtime.Values.Float_Array, ONNX_Float_Array_Access);
+     (ONNX_Runtime.Values.Int64_Array, ONNX_Int64_Array_Access);
    
    function Load_Data_Table
      (
       File_Name : String;
       Row_Count : out Natural
      )
-     return ONNX_Float_Array_Access
+     return ONNX_Int64_Array_Access
    is
       Rows, Columns : Natural;
       Table_File : File_Type;
@@ -71,16 +73,16 @@ procedure Cora_Predictions is
       
       declare
          Table_Size : constant Element_Index := Element_Index (Rows * Columns);
-         T : ONNX_Float_Array_Access := 
-           new ONNX_Runtime.Values.Float_Array (1 .. Table_Size);
+         T : ONNX_Int64_Array_Access := 
+           new ONNX_Runtime.Values.Int64_Array (1 .. Table_Size);
       begin
          for I in 1 .. Table_Size loop
-            Get (Table_File, T (I));
+            Get (Table_File, Long_Integer (T (I)));
          end loop;
          
          Put_Line (Standard_Error, ">>> T(1): " & T(1)'Image);
          for I in T'Range loop
-            if T(I) /= 0.0 then
+            if T(I) /= 0 then
                Put_Line (Standard_Error, ">>> First non-zero: " & 
                            T(I)'Image & " at index " & I'Image);
                exit;
@@ -118,11 +120,11 @@ begin
       Node_File, Edge_File : File_Type;
       
       Node_Count : Natural;
-      Node_Tensor : ONNX_Float_Array_Access :=
+      Node_Tensor : ONNX_Int64_Array_Access :=
         Load_Data_Table (Argument (2), Node_Count);
       
       Edge_Count : Natural;
-      Edge_Tensor : ONNX_Float_Array_Access :=
+      Edge_Tensor : ONNX_Int64_Array_Access :=
         Load_Data_Table (Argument (3), Edge_Count);
    begin
       
