@@ -143,8 +143,7 @@ begin
            ];
       begin
          
-         -- Session.Run (Input, Output);
-         null;
+         Session.Run (Input, Output);
          
       end;
       
