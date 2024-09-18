@@ -39,6 +39,7 @@ procedure Cora_Predictions is
    
    No_Model_File_Status : constant Ada.Command_Line.Exit_Status := 1;
    No_Data_File_Status : constant Ada.Command_Line.Exit_Status := 2;
+   Program_Error_Status : constant Ada.Command_Line.Exit_Status := 3;
    
    Model_File_Name : constant String :=
      (if Argument_Count > 0 then Argument (1) else "");
@@ -177,5 +178,11 @@ exception
      Exception_Occurence : NO_DATA_PROVIDED =>
       Put_Line (Command_Name & ": " & Exception_Message(Exception_Occurence));
       Ada.Command_Line.Set_Exit_Status (No_Data_File_Status);
+   
+   when
+     Exception_Occurence : PROGRAM_ERROR =>
+      Put_Line (Command_Name & ": " & "PROGRAM_ERROR, """ &
+                  Exception_Message(Exception_Occurence) & """");
+      Ada.Command_Line.Set_Exit_Status (Program_Error_Status);
    
 end Cora_Predictions;
