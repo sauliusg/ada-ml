@@ -222,7 +222,12 @@ begin
          begin
             Output (1).Get_Data (Classes);
             for I in 1 .. 10 loop
-               Put (Classes (Element_Index (I)));
+               Put (Classes (Element_Index (I)),4,3,0);
+               New_Line;
+            end loop;
+            Put_Line ("...");
+            for I in Classes'Last - 10 .. Classes'Last loop
+               Put (Classes (Element_Index (I)),4,3,0);
                New_Line;
             end loop;
          end;
