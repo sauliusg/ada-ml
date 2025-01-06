@@ -213,6 +213,19 @@ begin
          
          Put_Line ("Output Created :)");
          
+         declare
+            N_Classes : constant Element_Index := 7;
+            N_Values : constant Element_Index :=
+              Element_Index(Node_Count) * N_Classes;
+            
+            Classes : ONNX_Runtime.Values.Float_Array (1 .. N_Values);
+         begin
+            Output (1).Get_Data (Classes);
+            for I in 1 .. 10 loop
+               Put (Classes (Element_Index (I)));
+               New_Line;
+            end loop;
+         end;
       end;
       
       Free (Node_Tensor);
