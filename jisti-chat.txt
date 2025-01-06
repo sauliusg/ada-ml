@@ -1,0 +1,25 @@
+import onnxruntime as ort
+
+# Load the ONNX model
+ort_session = ort.InferenceSession("gcn_model.onnx")
+
+# Prepare input data
+inputs = {"x": data.x.numpy(), "edge_index": data.edge_index.numpy()}
+
+# Perform inference
+outputs = ort_session.run(None, inputs)
+print(outputs) 
+
+#------------------------------
+
+from onnx2torch import convert
+
+# Load the ONNX model and convert it to PyTorch
+import onnx
+onnx_model = onnx.load("gcn_model.onnx")
+torch_model = convert(onnx_model)
+
+# Use the PyTorch model for inference
+output = torch_model(data.x, data.edge_index)
+print(output) 
+# 15:01
