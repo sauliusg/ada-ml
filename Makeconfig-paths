@@ -1,0 +1,11 @@
+# --*- Makefile -*--
+
+# Necessary to find the ONNX runtime:
+
+LIBRARY_PATH := ${HOME}/lib:${LIBRARY_PATH}
+
+export LIBRARY_PATH
+
+LD_LIBRARY_PATH := ${HOME}/lib:${LD_LIBRARY_PATH}
+
+export LD_LIBRARY_PATH
