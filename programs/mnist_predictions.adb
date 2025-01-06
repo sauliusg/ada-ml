@@ -18,7 +18,7 @@ with PNM_Reader;
 with Ada.Environment_Variables;
 with Ada.Characters.Handling;
 
-procedure Ada_Ml is
+procedure MNIST_Predictions is
 
    pragma Style_Checks (Off);
    
@@ -172,4 +172,4 @@ exception
       Put_Line (Command_Name & ": " & Exception_Message(Exception_Occurence));
       Ada.Command_Line.Set_Exit_Status (No_Model_File_Status);
    
-end Ada_Ml;
+end MNIST_Predictions;
