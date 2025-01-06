@@ -1,0 +1,8 @@
+# --*- Makefile -*--
+
+.PHONY: local-clean clean
+
+local-clean:
+	rm -f ${ADA_EXEC}
+
+clean: local-clean

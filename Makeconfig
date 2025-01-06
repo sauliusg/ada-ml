@@ -1,0 +1,13 @@
+# --*- Makefile -*--
+
+BIN_DIR = ./bin
+
+PROG_DIR = ./programs
+
+ADA_SOURCES = $(wildcard ${PROG_DIR}/*.adb)
+
+ADA_EXEC = ${ADA_SOURCES:${PROG_DIR}/%.adb=${BIN_DIR}/%}
+
+.PHONY: all
+
+all: ${ADA_EXEC}
