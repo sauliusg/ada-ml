@@ -219,15 +219,24 @@ begin
               Element_Index(Node_Count) * N_Classes;
             
             Classes : ONNX_Runtime.Values.Float_Array (1 .. N_Values);
+            Matrix : array (1 .. N_Classes, 1 .. Node_Count) of Float;
+            
+            K : Element_Index;
          begin
             Output (1).Get_Data (Classes);
-            for I in 1 .. 10 loop
-               Put (Classes (Element_Index (I)),4,3,0);
-               New_Line;
+            
+            K := 1;
+            for I in 1 .. N_Classes loop
+               for J in 1 .. Node_Count loop
+                  Matrix (I, J) := Classes (K);
+                  K := K + 1;
+               end loop;
             end loop;
-            Put_Line ("...");
-            for I in Classes'Last - 10 .. Classes'Last loop
-               Put (Classes (Element_Index (I)),4,3,0);
+            
+            for J in 1 .. 10 loop
+               for I in 1 .. N_Classes loop
+                 Put (Matrix (I, J),6,3,0);
+               end loop;
                New_Line;
             end loop;
          end;
