@@ -49,9 +49,13 @@ procedure Cora_Predictions is
    -- -------------------------------------------------------------------------
      
    type ONNX_Int64_Array_Access is access ONNX_Runtime.Values.Int64_Array;
+   type ONNX_Float_Array_Access is access ONNX_Runtime.Values.Float_Array;
    
    procedure Free is new Ada.Unchecked_Deallocation
      (ONNX_Runtime.Values.Int64_Array, ONNX_Int64_Array_Access);
+   
+   procedure Free is new Ada.Unchecked_Deallocation
+     (ONNX_Runtime.Values.Float_Array, ONNX_Float_Array_Access);
    
    function Load_Data_Table
      (
@@ -98,6 +102,51 @@ procedure Cora_Predictions is
       end;
    end;
    
+   function Load_Data_Table
+     (
+      File_Name : String;
+      Row_Count : out Natural
+     )
+     return ONNX_Float_Array_Access
+   is
+      Rows, Columns : Natural;
+      Table_File : File_Type;
+   begin
+      Open (Table_File, In_File, File_Name);
+      
+      Get (Table_File, Rows);
+      Get (Table_File, Columns);
+      
+      Put_Line (Standard_Error, ">>> " & Rows'Image);
+      Put_Line (Standard_Error, ">>> " & Columns'Image);
+      
+      declare
+         Table_Size : constant Element_Index := Element_Index (Rows * Columns);
+         T : constant ONNX_Float_Array_Access := 
+           new ONNX_Runtime.Values.Float_Array (1 .. Table_Size);
+      begin
+         for I in 1 .. Table_Size loop
+            Get (Table_File, T (I));
+         end loop;
+         
+         Put_Line (Standard_Error, ">>> T(1): " & T(1)'Image);
+         for I in T'Range loop
+            if T(I) /= 0.0 then
+               Put_Line (Standard_Error, ">>> First non-zero: " & 
+                           T(I)'Image & " at index " & I'Image);
+               exit;
+            end if;
+         end loop;
+         Put_Line (Standard_Error, ">>> T(N): " & T(Table_Size)'Image);
+         New_Line (Standard_Error);
+         
+         Close (Table_File);
+         
+         Row_Count := Rows;
+         return T;
+      end;
+   end;
+   
 begin
    
    if Argument_Count = 0 then
@@ -117,10 +166,11 @@ begin
    declare
       Session : ONNX_Runtime.Sessions.Session :=
         Env.Create_Session (Model => Model_File_Name);
+      
       Node_File, Edge_File : File_Type;
       
       Node_Count : Natural;
-      Node_Tensor : ONNX_Int64_Array_Access :=
+      Node_Tensor : ONNX_Float_Array_Access :=
         Load_Data_Table (Argument (2), Node_Count);
       
       Edge_Count : Natural;
@@ -144,7 +194,6 @@ begin
               (
                Node_Tensor.all,
                [
-                 1, 1, 
                  Element_Index (Node_Count),
                  Element_Index (Node_Tensor.all'Length / Node_Count)
                ]
@@ -153,7 +202,6 @@ begin
               (
                Edge_Tensor.all,
                [
-                 1, 1,
                  Element_Index (Edge_Count),
                  Element_Index (Edge_Tensor.all'Length / Edge_Count)
                ]
@@ -162,6 +210,8 @@ begin
       begin
          
          Session.Run (Input, Output);
+         
+         Put_Line ("Output Created :)");
          
       end;
       
