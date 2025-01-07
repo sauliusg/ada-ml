@@ -297,7 +297,7 @@ begin
               Element_Index(Node_Count) * N_Classes;
             
             Classes : ONNX_Runtime.Values.Float_Array (1 .. N_Values);
-            Matrix : array (1 .. N_Classes, 1 .. Node_Count) of Float;
+            Matrix : array (1 .. Node_Count, 1 .. N_Classes) of Float;
             
             K : Element_Index;
             C : Element_Index range 1 .. 7;
@@ -316,23 +316,23 @@ begin
             Put ("Class"); New_Line;
             
             K := 1;
-            for I in 1 .. N_Classes loop
-               for J in 1 .. Node_Count loop
+            for I in 1 .. Node_Count loop
+               for J in 1 .. N_Classes loop
                   Matrix (I, J) := Classes (K);
                   K := K + 1;
                end loop;
             end loop;
             
-            for J in 1 .. Node_Count loop
-               Put (J-1,0);
+            for I in 1 .. Node_Count loop
+               Put (I-1,0);
                C := 1;
-               V := Matrix (C, J);
-               for I in 1 .. N_Classes loop
+               V := Matrix (I, C);
+               for J in 1 .. N_Classes loop
                   Put (ASCII.HT);
                   Put (Matrix (I, J),0,3,0);
                   if V < Matrix (I, J) then
                      V := Matrix (I, J);
-                     C := I;
+                     C := J;
                   end if;
                end loop;
                Put (ASCII.HT);
