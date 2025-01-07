@@ -6,6 +6,7 @@ with Ada.Long_Integer_Text_IO; use Ada.Long_Integer_Text_IO;
 with Ada.Float_Text_IO;        use Ada.Float_Text_IO;
 with Ada.Command_Line;         use Ada.Command_Line;
 with Ada.Exceptions;           use Ada.Exceptions;
+with Ada.Characters.Handling;  use Ada.Characters.Handling;
 with Interfaces;               use Interfaces;
 
 with Ada.Numerics.Elementary_Functions;
@@ -57,6 +58,8 @@ procedure Cora_Predictions is
    procedure Free is new Ada.Unchecked_Deallocation
      (ONNX_Runtime.Values.Float_Array, ONNX_Float_Array_Access);
    
+   Debug : Boolean := False;
+   
    function Load_Data_Table
      (
       File_Name : String;
@@ -72,8 +75,10 @@ procedure Cora_Predictions is
       Get (Table_File, Rows);
       Get (Table_File, Columns);
       
-      Put_Line (Standard_Error, ">>> " & Rows'Image);
-      Put_Line (Standard_Error, ">>> " & Columns'Image);
+      if Debug then
+         Put_Line (Standard_Error, ">>> " & Rows'Image);
+         Put_Line (Standard_Error, ">>> " & Columns'Image);
+      end if;
       
       declare
          Table_Size : constant Element_Index := Element_Index (Rows * Columns);
@@ -84,16 +89,18 @@ procedure Cora_Predictions is
             Get (Table_File, Long_Integer (T (I)));
          end loop;
          
-         Put_Line (Standard_Error, ">>> T(1): " & T(1)'Image);
-         for I in T'Range loop
-            if T(I) /= 0 then
-               Put_Line (Standard_Error, ">>> First non-zero: " & 
-                           T(I)'Image & " at index " & I'Image);
-               exit;
-            end if;
-         end loop;
-         Put_Line (Standard_Error, ">>> T(N): " & T(Table_Size)'Image);
-         New_Line (Standard_Error);
+         if Debug then
+            Put_Line (Standard_Error, ">>> T(1): " & T(1)'Image);
+            for I in T'Range loop
+               if T(I) /= 0 then
+                  Put_Line (Standard_Error, ">>> First non-zero: " & 
+                              T(I)'Image & " at index " & I'Image);
+                  exit;
+               end if;
+            end loop;
+            Put_Line (Standard_Error, ">>> T(N): " & T(Table_Size)'Image);
+            New_Line (Standard_Error);
+         end if;
          
          Close (Table_File);
          
@@ -117,8 +124,10 @@ procedure Cora_Predictions is
       Get (Table_File, Rows);
       Get (Table_File, Columns);
       
-      Put_Line (Standard_Error, ">>> " & Rows'Image);
-      Put_Line (Standard_Error, ">>> " & Columns'Image);
+      if Debug then
+         Put_Line (Standard_Error, ">>> " & Rows'Image);
+         Put_Line (Standard_Error, ">>> " & Columns'Image);
+      end if;
       
       declare
          Table_Size : constant Element_Index := Element_Index (Rows * Columns);
@@ -129,16 +138,20 @@ procedure Cora_Predictions is
             Get (Table_File, T (I));
          end loop;
          
-         Put_Line (Standard_Error, ">>> T(1): " & T(1)'Image);
-         for I in T'Range loop
-            if T(I) /= 0.0 then
-               Put_Line (Standard_Error, ">>> First non-zero: " & 
-                           T(I)'Image & " at index " & I'Image);
-               exit;
-            end if;
-         end loop;
-         Put_Line (Standard_Error, ">>> T(N): " & T(Table_Size)'Image);
-         New_Line (Standard_Error);
+         if Debug then
+            Put_Line (Standard_Error, ">>> T(1): " & T(1)'Image);
+         
+            for I in T'Range loop
+               if T(I) /= 0.0 then
+                  Put_Line (Standard_Error, ">>> First non-zero: " & 
+                              T(I)'Image & " at index " & I'Image);
+                  exit;
+               end if;
+            end loop;
+            
+            Put_Line (Standard_Error, ">>> T(N): " & T(Table_Size)'Image);
+            New_Line (Standard_Error);
+         end if;
          
          Close (Table_File);
          
@@ -176,7 +189,14 @@ procedure Cora_Predictions is
    end;
    
 begin
-   
+   if Ada.Environment_Variables.Exists ("CORA_PREDICTIONS_DEBUG") and then
+     (Ada.Environment_Variables.Value ("CORA_PREDICTIONS_DEBUG") = "1" or else
+        To_Lower (Ada.Environment_Variables.Value ("CORA_PREDICTIONS_DEBUG"))
+        = "true")
+   then
+      Debug := True;
+   end if;
+
    if Argument_Count = 0 then
       raise NO_MODEL_PROVIDED with
         "a model file (an *.onnx file) name must be provided " &
@@ -206,15 +226,17 @@ begin
         Load_Data_Table (Argument (3), Edge_Count);
    begin
       
-      Put_Line (Standard_Error, ">>> Node_Count: " & Node_Count'Image);
-      Put_Line (Standard_Error, ">>> Node Features: " & 
-                  Natural'Image (Node_Tensor.all'Length / Node_Count));
-      New_Line (Standard_Error);
+      if Debug then
+         Put_Line (Standard_Error, ">>> Node_Count: " & Node_Count'Image);
+         Put_Line (Standard_Error, ">>> Node Features: " & 
+                     Natural'Image (Node_Tensor.all'Length / Node_Count));
+         New_Line (Standard_Error);
       
-      Put_Line (Standard_Error, ">>> Edge_Count: " & Edge_Count'Image);
-      Put_Line (Standard_Error, ">>> Edge Features: " &
-                  Natural'Image (Edge_Tensor.all'Length / Edge_Count));
-      New_Line (Standard_Error);
+         Put_Line (Standard_Error, ">>> Edge_Count: " & Edge_Count'Image);
+         Put_Line (Standard_Error, ">>> Edge Features: " &
+                     Natural'Image (Edge_Tensor.all'Length / Edge_Count));
+         New_Line (Standard_Error);
+      end if;
       
       Normalise_Row_Average (Node_Tensor.all, Node_Count);
       
