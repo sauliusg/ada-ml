@@ -306,13 +306,13 @@ begin
             Output (1).Get_Data (Classes);
             
             Put ("Idx"); Put (ASCII.HT);
+            Put ("Class0"); Put (ASCII.HT);
             Put ("Class1"); Put (ASCII.HT);
             Put ("Class2"); Put (ASCII.HT);
             Put ("Class3"); Put (ASCII.HT);
             Put ("Class4"); Put (ASCII.HT);
             Put ("Class5"); Put (ASCII.HT);
             Put ("Class6"); Put (ASCII.HT);
-            Put ("Class7"); Put (ASCII.HT);
             Put ("Class"); New_Line;
             
             K := 1;
@@ -336,7 +336,7 @@ begin
                   end if;
                end loop;
                Put (ASCII.HT);
-               Put (Integer (C), 0);
+               Put (Integer (C-1), 0);
                New_Line;
             end loop;
          end;
