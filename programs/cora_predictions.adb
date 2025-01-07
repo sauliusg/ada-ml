@@ -147,6 +147,34 @@ procedure Cora_Predictions is
       end;
    end;
    
+   procedure Normalise_Row_Average
+     (
+      Data : in out ONNX_Runtime.Values.Float_Array;
+      Row_Count : in Natural
+     ) is
+      Row_Start, Row_Length : Positive;
+      Sum : Long_Float;
+      Denom : Long_Float;
+   begin
+      pragma Assert (Data'First = 1);
+      pragma Assert (Data'Length mod Row_Count = 0);
+      Row_Start := 1;
+      Row_Length := Data'Length / Row_Count;
+      
+      while Element_Index (Row_Start) < Data'Last loop
+         Sum := 0.0;
+         for I in Row_Start .. Row_Start + Row_Length - 1 loop
+            Sum := Sum + Long_Float (Data (Element_Index (I)));
+         end loop;
+         Denom := Sum;
+         for I in Row_Start .. Row_Start + Row_Length - 1 loop
+            Data (Element_Index (I)) :=
+              Float (Long_Float (Data (Element_Index (I))) / Denom);
+         end loop;
+         Row_Start := Row_Start + Row_Length;
+      end loop;
+   end;
+   
 begin
    
    if Argument_Count = 0 then
@@ -187,6 +215,8 @@ begin
       Put_Line (Standard_Error, ">>> Edge Features: " &
                   Natural'Image (Edge_Tensor.all'Length / Edge_Count));
       New_Line (Standard_Error);
+      
+      Normalise_Row_Average (Node_Tensor.all, Node_Count);
       
       declare
          Input : constant ONNX_Runtime.Values.Value_Array (1 .. 2) :=

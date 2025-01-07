@@ -13,10 +13,10 @@ ALL_ADA_SOURCES ?= $(shell find -name obj -prune -o \( -name '*.adb' -o -name '*
 .PHONY: build alrbuild alrclean distclean
 
 build alrbuild:
-	alr -v build ${ALIRE_ARGUMENTS}
+	alr build ${ALIRE_ARGUMENTS}
 
 ${BIN_DIR}/%: ${ALL_ADA_SOURCES}
-	alr -v build ${ALIRE_ARGUMENTS}
+	alr build ${ALIRE_ARGUMENTS}
 	touch $@
 
 alrclean:
