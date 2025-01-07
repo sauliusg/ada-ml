@@ -1,0 +1,1 @@
+ 1044  csv2tab analysis/by-hand/x_nodes.csv | sort | tail -n +4 | head -10 | awk '{printf "%s", $1; prev = 1; for( i = 2; i < NF; i++ ) {if ($i != 0) {if (i != prev + 1) {printf "%s", ", ..."}; printf ", %f", $i}}; if (prev + 1 != NF) {printf "%s", ", ..."}; if( $NF == 0) {printf ", %s", "0.0"} else {printf ", %f", $NF}; print ""}'
