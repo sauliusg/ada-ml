@@ -1,0 +1,1 @@
+  676  (set -x; directory-metadata; (echo -e "2708\t1433"; sed 's/,/\t/g' x_nodes.csv) > nodes.dat) 2>&1 | tee nodes.dat.log
