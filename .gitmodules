@@ -1,0 +1,3 @@
+[submodule "externals/image-ada"]
+	path = externals/image-ada
+	url = https://github.com/sauliusg/image-ada.git
