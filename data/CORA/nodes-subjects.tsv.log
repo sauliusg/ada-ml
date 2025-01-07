@@ -7,7 +7,7 @@ pterodaktilis
 /home/saulius/src/ada-ml/data/CORA
 + set +x
 + svnversion
-91M
+94:98M
 + svn info
 Path: .
 Working Copy Root Path: /home/saulius/src/ada-ml
@@ -15,16 +15,16 @@ URL: svn+ssh://saulius.grazulis.lt/home/saulius/svn-repositories/ada-ml/trunk/da
 Relative URL: ^/trunk/data/CORA
 Repository Root: svn+ssh://saulius.grazulis.lt/home/saulius/svn-repositories/ada-ml
 Repository UUID: cbc6df6a-4905-47e4-957a-ae58ab66f2a2
-Revision: 91
+Revision: 94
 Node Kind: directory
 Schedule: normal
 Last Changed Author: saulius
-Last Changed Rev: 91
-Last Changed Date: 2025-01-07 13:29:41 +0200 (Tue, 07 Jan 2025)
+Last Changed Rev: 92
+Last Changed Date: 2025-01-07 13:38:22 +0200 (Tue, 07 Jan 2025)
 
 + df -h .
 Filesystem               Size  Used Avail Use% Mounted on
-/dev/mapper/vgmint-root  1,8T  1,1T  700G  60% /
+/dev/mapper/vgmint-root  1,8T  1,1T  689G  61% /
 + type osname
 osname is /home/saulius/scripts/osname
 + osname
@@ -32,7 +32,7 @@ Linuxmint-21.2
 + uname -a
 Linux pterodaktilis 5.15.0-130-generic #140-Ubuntu SMP Wed Dec 18 17:59:53 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
 + date
-2025-01-07T13:37:31 EET
+2025-01-07T15:25:44 EET
 + csv2tab nodes.csv
 + awk '-F\t' 'BEGIN {OFS = "\t"} NR == 1 {$1 = "Idx"} NR >= 1 {print $1, $2, $4}'
 + perl -lane 'BEGIN {open (T, "classes.tsv") or die; %cls = map {($v, $k) = split; ($k, $v)} <T>} if ( $. == 1 ) {print "ClsNo\t", $_} else {print $cls{$F[2]}, "\t", $_}'
