@@ -1,1 +1,0 @@
--- check whether nodes (papers) are in the same order in the python tensors.
