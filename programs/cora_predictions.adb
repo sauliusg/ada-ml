@@ -275,6 +275,15 @@ begin
          begin
             Output (1).Get_Data (Classes);
             
+            Put ("Idx"); Put (ASCII.HT);
+            Put ("Class1"); Put (ASCII.HT);
+            Put ("Class2"); Put (ASCII.HT);
+            Put ("Class3"); Put (ASCII.HT);
+            Put ("Class4"); Put (ASCII.HT);
+            Put ("Class5"); Put (ASCII.HT);
+            Put ("Class6"); Put (ASCII.HT);
+            Put ("Class7"); New_Line;
+            
             K := 1;
             for I in 1 .. N_Classes loop
                for J in 1 .. Node_Count loop
@@ -284,8 +293,10 @@ begin
             end loop;
             
             for J in 1 .. Node_Count loop
+               Put (J-1,0);
                for I in 1 .. N_Classes loop
-                 Put (Matrix (I, J),6,3,0);
+                  Put (ASCII.HT);
+                  Put (Matrix (I, J),0,3,0);
                end loop;
                New_Line;
             end loop;
