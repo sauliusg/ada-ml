@@ -1,0 +1,9 @@
+image-ada (unreleased)
+
+  * Initial release.
+
+  * Added:
+    - pnm_reader.ad{s,b}
+        - a generic package to read PBM, PGM and PPM files into a grayscale raster
+    - pnmread.adb
+        - a program to read files supported by the pnm_reader.ad{s,b} package and to dump them as ASCII PGM images, primarily for testing the pnm_reader but also for some casual conversion ;).
