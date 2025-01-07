@@ -1,0 +1,1 @@
+  668  (set -x; directory-metadata ; (echo -e "2\t10556"; sed 's/,/\t/g' edge_index.csv) > edges.dat) 2>&1 | tee edges.dat.log
