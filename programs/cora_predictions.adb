@@ -272,6 +272,8 @@ begin
             Matrix : array (1 .. N_Classes, 1 .. Node_Count) of Float;
             
             K : Element_Index;
+            C : Element_Index range 1 .. 7;
+            V : Float;
          begin
             Output (1).Get_Data (Classes);
             
@@ -282,7 +284,8 @@ begin
             Put ("Class4"); Put (ASCII.HT);
             Put ("Class5"); Put (ASCII.HT);
             Put ("Class6"); Put (ASCII.HT);
-            Put ("Class7"); New_Line;
+            Put ("Class7"); Put (ASCII.HT);
+            Put ("Class"); New_Line;
             
             K := 1;
             for I in 1 .. N_Classes loop
@@ -294,10 +297,18 @@ begin
             
             for J in 1 .. Node_Count loop
                Put (J-1,0);
+               C := 1;
+               V := Matrix (C, J);
                for I in 1 .. N_Classes loop
                   Put (ASCII.HT);
                   Put (Matrix (I, J),0,3,0);
+                  if V < Matrix (I, J) then
+                     V := Matrix (I, J);
+                     C := I;
+                  end if;
                end loop;
+               Put (ASCII.HT);
+               Put (Integer (C), 0);
                New_Line;
             end loop;
          end;
