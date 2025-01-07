@@ -1,0 +1,66 @@
+SQLite format 3
+Gtableoutput_historyoutput_history
+CREATE TABLE output_history
+                            (session integer, line integer, output text,
+                            PRIMARY KEY (session, line));
+indexsqlite_autoindex_output_history_1output_history
+;tablehistoryhistory
+CREATE TABLE history
+                    (session integer, line integer, source text, source_raw text,
+                    PRIMARY KEY (session, line))-
+indexsqlite_autoindex_history_1history
+Ytablesqlite_sequencesqlite_sequence
+CREATE TABLE sqlite_sequence(name,seq)
+}tablesessionssessions
+CREATE TABLE sessions (session integer
+                            primary key autoincrement, start timestamp,
+                            end timestamp, num_cmds integer, remark text)
+2025-01-07 08:30:20.2171582025-01-07 09:09:06.131628
+2025-01-06 20:28:24.0703252025-01-06 22:48:56.606095:
+2025-01-06 20:24:54.6378162025-01-06 20:25:28.122756:
+2025-01-06 17:39:46.6757272025-01-06 17:39:49.802222;
+2025-01-06 17:02:01.1956352025-01-06 17:30:55.165785
+2025-01-06 17:00:54.4946672025-01-06 17:01:44.750147
+sessions
+pd.DataFrame (data.x.numpy()).to_csv ("x_nodes.csv", index=False, header=False)pd.DataFrame (data.x.numpy()).to_csv ("x_nodes.csv", index=False, header=False)
+pd.DataFrame (data.x.numpy()).to_csvsv ("x_nodes.csv", index=False, header=False)pd.DataFrame (data.x.numpy()).to_csvsv ("x_nodes.csv", index=False, header=False)
+pd.DataFrame (data.edge_index.numpy()).to_csv ("edge_index.csv", index=False, header=False)pd.DataFrame (data.edge_index.numpy()).to_csv ("edge_index.csv", index=False, header=False)
+pd.DataFrame (data.edge_index.numpy()).to_csvsv ("edge_index.csv", index=False, header=False)pd.DataFrame (data.edge_index.numpy()).to_csvsv ("edge_index.csv", index=False, header=False)
+	import numpyimport numpy-%
+import pandas as pdimport pandas as pd-$
+import pandas as pdimport pandas as pd%#
+data.edge_indexdata.edge_index
+datadata)!
+data = dataset[0]data = dataset[0]
+dataset = Planetoid(root='data/Cora', name='Cora', transform=NormalizeFeatures())dataset = Planetoid(root='data/Cora', name='Cora', transform=NormalizeFeatures())w
+from torch_geometric.transforms import NormalizeFeaturesfrom torch_geometric.transforms import NormalizeFeaturesb
+from torch_geometric.datasets import Planetoidfrom torch_geometric.datasets import Planetoid"
+print(outputs)print(outputs)%
+data.edge_indexdata.edge_index
+datadataI
+torch_model = convert(onnx_model)torch_model = convert(onnx_model)s
+onnx_model = onnx.load("./data/models/gcn_model.onnx")onnx_model = onnx.load("./data/models/gcn_model.onnx")
+import onnximport onnxC
+from onnx2torch import convertfrom onnx2torch import convert#
+print(outputs)print(outputs)U
+outputs = ort_session.run(None, inputs)outputs = ort_session.run(None, inputs)
+inputs = {"data.1": data.x.numpy(), "onnx::Concat_1": data.edge_index.numpy()}inputs = {"data.1": data.x.numpy(), "onnx::Concat_1": data.edge_index.numpy()}U
+outputs = ort_session.run(None, inputs)outputs = ort_session.run(None, inputs)
+inputs = {"x": data.x.numpy(), "edge_index": data.edge_index.numpy()}inputs = {"x": data.x.numpy(), "edge_index": data.edge_index.numpy()}
+ort_session = ort.InferenceSession("./data/models/gcn_model.onnx")ort_session = ort.InferenceSession("./data/models/gcn_model.onnx")9
+import onnxruntime as ortimport onnxruntime as ort-
+dataset.num_classesdataset.num_classes
+data.xdata.x%
+	data.edge_indexdata.edge_index%
+data.edge_indexdata.edge_index
+data.xdata.x
+datadata)	
+data = dataset[0]data = dataset[0]
+dataset = Planetoid(root='data/Cora', name='Cora', transform=NormalizeFeatures())dataset = Planetoid(root='data/Cora', name='Cora', transform=NormalizeFeatures())w
+from torch_geometric.transforms import NormalizeFeaturesfrom torch_geometric.transforms import NormalizeFeaturesc
+from torch_geometric.datasets import Planetoidfrom torch_geometric.datasets import Planetoid
+import torchimport torch
+dataset = Planetoid(root='data/Cora', name='Cora', transform=NormalizeFeatures())dataset = Planetoid(root='data/Cora', name='Cora', transform=NormalizeFeatures())v
+from torch_geometric.transforms import NormalizeFeaturesfrom torch_geometric.transforms import NormalizeFeaturesb
+from torch_geometric.datasets import Planetoidfrom torch_geometric.datasets import Planetoid
+		%%import torchimport torch

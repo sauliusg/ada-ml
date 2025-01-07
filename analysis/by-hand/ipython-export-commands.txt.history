@@ -1,0 +1,1 @@
+  873  strings ~/.ipython/profile_default/history.sqlite > analysis/by-hand/ipython-export-commands.txt
