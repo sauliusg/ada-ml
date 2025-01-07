@@ -1,0 +1,1 @@
+  566  (set -x; directory-metadata; csv2tab nodes.csv | awk -F'\t' 'BEGIN {OFS = "\t"} NR == 1 {$1 = "Idx"} NR >= 1 {print $1, $2, $4}' > nodes-subjects.tsv) &> nodes-subjects.tsv.log
