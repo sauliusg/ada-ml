@@ -1,0 +1,1 @@
+  816  (set -x; directory-metadata ; diff -s <(cat nodes_denorm.dat) <(tail -n +2 data/CORA/nodes.dat) | grep '^>' | head -2 | grep --color=always -E '|1'; diff -s <(cat nodes_denorm.dat) <(tail -n +2 data/CORA/nodes.dat) | grep '^<' | head -2 | grep --color=always -E '|1') | tee diff-unsorted-nodes.log

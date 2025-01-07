@@ -1,0 +1,1 @@
+  808  (set -c; directory-metadata; diff -bw -s <(cat nodes_denorm.dat | sort -u) <(tail -n +2 data/CORA/nodes.dat | sort -u)) | tee diff-sorted-nodes.log
