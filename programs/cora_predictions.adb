@@ -211,8 +211,6 @@ begin
          
          Session.Run (Input, Output);
          
-         Put_Line ("Output Created :)");
-         
          declare
             N_Classes : constant Element_Index := 7;
             N_Values : constant Element_Index :=
@@ -233,7 +231,7 @@ begin
                end loop;
             end loop;
             
-            for J in 1 .. 10 loop
+            for J in 1 .. Node_Count loop
                for I in 1 .. N_Classes loop
                  Put (Matrix (I, J),6,3,0);
                end loop;
