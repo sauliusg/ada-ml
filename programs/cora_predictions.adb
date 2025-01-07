@@ -188,6 +188,30 @@ procedure Cora_Predictions is
       end loop;
    end;
    
+   procedure Dump_Data_Table
+     (
+      Out_File : File_Type;
+      Data : in out ONNX_Runtime.Values.Float_Array;
+      Row_Count : in Natural
+     ) is
+      Row_Start, Row_Length : Positive;
+   begin
+      pragma Assert (Data'First = 1);
+      pragma Assert (Data'Length mod Row_Count = 0);
+      Row_Start := 1;
+      Row_Length := Data'Length / Row_Count;
+      
+      while Element_Index (Row_Start) < Data'Last loop
+         Put (Out_File, ">>>>");
+         for I in Row_Start .. Row_Start + Row_Length - 1 loop
+            Put (Out_File, ASCII.HT);
+            Put (Out_File, Data (Element_Index (I)), 0, 4, 0);
+         end loop;
+         New_Line (Out_File);
+         Row_Start := Row_Start + Row_Length;
+      end loop;
+   end;
+   
 begin
    if Ada.Environment_Variables.Exists ("CORA_PREDICTIONS_DEBUG") and then
      (Ada.Environment_Variables.Value ("CORA_PREDICTIONS_DEBUG") = "1" or else
@@ -239,6 +263,10 @@ begin
       end if;
       
       Normalise_Row_Average (Node_Tensor.all, Node_Count);
+      
+      if Debug then
+         Dump_Data_Table (Standard_Error, Node_Tensor.all, Node_Count);
+      end if;
       
       declare
          Input : constant ONNX_Runtime.Values.Value_Array (1 .. 2) :=
