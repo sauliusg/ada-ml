@@ -35,7 +35,8 @@ begin
          Model_Metadata : aliased access OrtModelMetadata;
          
       begin
-         Put_Line ("Model:");
+         Put_Line ("Model File:" & ASCII.HT &
+                     Model_File_Name);
          
          Model_Metadata := Get_Metadata (Session);
          
