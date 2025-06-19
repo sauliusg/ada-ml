@@ -6,23 +6,29 @@ with System;
 
 package body ONNX_Runtime.Sessions.Metadata is
    
-   procedure Get_Metadata
+   function Get_Metadata
      (
-      Session : ONNX_Runtime.Sessions.Session;
-      Metadata : out OrtModelMetadata
-     ) is
-      Return_Status : OrtStatusPtr;
+      Session : ONNX_Runtime.Sessions.Session
+     ) return access OrtModelMetadata
+   is
+      Local_Metadata : aliased OrtModelMetadata;
+      Local_Metadata_Access : aliased access OrtModelMetadata :=
+        Local_Metadata'Access;
    begin
-      Return_Status :=
-        API.SessionGetModelMetadata
-        (
-         Session.Value,
-         Metadata'Address
+      Check_Status 
+        (API.SessionGetModelMetadata
+           (
+            Session.Value,
+            Local_Metadata_Access'Address
+           )
         );
-      Check_Status (Return_Status);
+      return Local_Metadata_Access;
    end;
    
-   function Producer_Name (Metadata : aliased OrtModelMetadata) return String
+   function Producer_Name 
+     (
+      Metadata : access OrtModelMetadata
+     ) return String
    is
       function Cast is new Ada.Unchecked_Conversion
         (Interfaces.C.Strings.chars_ptr, System.Address);
@@ -43,7 +49,7 @@ package body ONNX_Runtime.Sessions.Metadata is
       Check_Status 
         (API.ModelMetadataGetProducerName
            (
-            Metadata'Access,
+            Metadata,
             Allocator,
             Name_Chars'Address
            )
