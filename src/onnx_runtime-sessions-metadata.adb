@@ -37,6 +37,8 @@ package body ONNX_Runtime.Sessions.Metadata is
            )
         );
       
+      API.ReleaseModelMetadata (Model_Metadata);
+      
       return Interfaces.C.Strings.Value (Name_Chars);
    end;
    
