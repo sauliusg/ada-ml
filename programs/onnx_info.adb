@@ -9,8 +9,12 @@ with Ada.Exceptions;      use Ada.Exceptions;
 with ONNX_Runtime.Environments;
 with ONNX_Runtime.Sessions;
 with ONNX_Runtime.Values; use ONNX_Runtime.Values;
+with ONNX_Runtime.C_API;  use ONNX_Runtime.C_API;
 
-procedure MNIST_Predictions is
+with ONNX_Runtime.Sessions.Metadata;
+use ONNX_Runtime.Sessions.Metadata;
+
+procedure ONNX_Info is
 
    pragma Style_Checks (Off);
    
@@ -28,10 +32,13 @@ begin
          Session : ONNX_Runtime.Sessions.Session :=
            Env.Create_Session (Model => Model_File_Name);
          
+         Model_Metadata : OrtModelMetadata;
+         
       begin
          Put_Line ("Model:");
+         Get_Metadata (Session, Model_Metadata);
       end;
    
    end loop;
    
-end MNIST_Predictions;
+end ONNX_Info;
