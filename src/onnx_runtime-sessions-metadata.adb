@@ -45,6 +45,8 @@ package body ONNX_Runtime.Sessions.Metadata is
       
    end;
    
+   -- private subroutines:
+   
    function Get_Metadata
      (
       Session : ONNX_Runtime.Sessions.Session
