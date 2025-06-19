@@ -39,7 +39,10 @@ package body ONNX_Runtime.Sessions.Metadata is
       
       API.ReleaseModelMetadata (Model_Metadata);
       
-      return Interfaces.C.Strings.Value (Name_Chars);
+      return Result : String := Interfaces.C.Strings.Value (Name_Chars) do
+        Allocator.Free (Allocator, Cast (Name_Chars));
+      end return;
+      
    end;
    
    function Get_Metadata
