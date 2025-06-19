@@ -6,17 +6,18 @@ with System;
 
 package body ONNX_Runtime.Sessions.Metadata is
    
+   function Cast is new Ada.Unchecked_Conversion
+     (Interfaces.C.Strings.chars_ptr, System.Address);
+   
+   function Get_Allocator return access ONNX_Runtime.C_API.OrtAllocator is
+   begin
+      return Result : access ONNX_Runtime.C_API.OrtAllocator do
+        Check_Status (API.GetAllocatorWithDefaultOptions (Result'Address));
+      end return;
+   end Get_Allocator;
+
    function Producer_Name (S : Session) return String
    is
-      function Cast is new Ada.Unchecked_Conversion
-        (Interfaces.C.Strings.chars_ptr, System.Address);
-
-      function Get_Allocator return access ONNX_Runtime.C_API.OrtAllocator is
-      begin
-         return Result : access ONNX_Runtime.C_API.OrtAllocator do
-            Check_Status (API.GetAllocatorWithDefaultOptions (Result'Address));
-         end return;
-      end Get_Allocator;
 
       Allocator  : constant access ONNX_Runtime.C_API.OrtAllocator :=
         Get_Allocator;
@@ -43,8 +44,38 @@ package body ONNX_Runtime.Sessions.Metadata is
         Allocator.Free (Allocator, Cast (Name_Chars));
       end return;
       
-   end;
+   end Producer_Name;
    
+   function Graph_Name (S : Session) return String
+   is
+      
+      Allocator  : constant access ONNX_Runtime.C_API.OrtAllocator :=
+        Get_Allocator;
+      
+      Name_Chars : Interfaces.C.Strings.Chars_Ptr;
+      
+      Model_Metadata : aliased access OrtModelMetadata;
+         
+   begin
+      Model_Metadata := Get_Metadata (S);
+      
+      Check_Status 
+        (API.ModelMetadataGetGraphName
+           (
+            Model_Metadata,
+            Allocator,
+            Name_Chars'Address
+           )
+        );
+      
+      API.ReleaseModelMetadata (Model_Metadata);
+      
+      return Result : String := Interfaces.C.Strings.Value (Name_Chars) do
+        Allocator.Free (Allocator, Cast (Name_Chars));
+      end return;
+      
+   end Graph_Name; 
+
    -- private subroutines:
    
    function Get_Metadata

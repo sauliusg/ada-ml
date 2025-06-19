@@ -4,6 +4,8 @@ package ONNX_Runtime.Sessions.Metadata is
 
    function Producer_Name (S : Session) return String;
    
+   function Graph_Name (S : Session) return String;
+
 private
    
    function Get_Metadata

@@ -38,6 +38,9 @@ begin
          
          Put_Line ("Producer Name:" & ASCII.HT &
                      Producer_Name (Session));
+         
+         Put_Line ("Graph Name:" & ASCII.HT &
+                     Graph_Name (Session));
       end;
    
    end loop;
