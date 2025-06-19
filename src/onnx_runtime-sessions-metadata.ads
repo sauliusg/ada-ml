@@ -7,5 +7,7 @@ package ONNX_Runtime.Sessions.Metadata is
       Session : ONNX_Runtime.Sessions.Session;
       Metadata : out OrtModelMetadata
      );
-
+   
+   function Producer_Name (Metadata : aliased OrtModelMetadata) return String;
+   
 end ONNX_Runtime.Sessions.Metadata;

@@ -1,5 +1,9 @@
 pragma Style_Checks (Off);
 
+with Ada.Unchecked_Conversion;
+with Interfaces.C.Strings;
+with System;
+
 package body ONNX_Runtime.Sessions.Metadata is
    
    procedure Get_Metadata
@@ -16,6 +20,35 @@ package body ONNX_Runtime.Sessions.Metadata is
          Metadata'Address
         );
       Check_Status (Return_Status);
+   end;
+   
+   function Producer_Name (Metadata : aliased OrtModelMetadata) return String
+   is
+      function Cast is new Ada.Unchecked_Conversion
+        (Interfaces.C.Strings.chars_ptr, System.Address);
+
+      function Get_Allocator return access ONNX_Runtime.C_API.OrtAllocator is
+      begin
+         return Result : access ONNX_Runtime.C_API.OrtAllocator do
+            Check_Status (API.GetAllocatorWithDefaultOptions (Result'Address));
+         end return;
+      end Get_Allocator;
+
+      Allocator  : constant access ONNX_Runtime.C_API.OrtAllocator :=
+        Get_Allocator;
+      
+      Name_Chars : Interfaces.C.Strings.Chars_Ptr;
+      
+   begin
+      Check_Status 
+        (API.ModelMetadataGetProducerName
+           (
+            Metadata'Access,
+            Allocator,
+            Name_Chars'Address
+           )
+        );
+      return Interfaces.C.Strings.Value (Name_Chars);
    end;
    
 end;

@@ -32,11 +32,15 @@ begin
          Session : ONNX_Runtime.Sessions.Session :=
            Env.Create_Session (Model => Model_File_Name);
          
-         Model_Metadata : OrtModelMetadata;
+         Model_Metadata : aliased OrtModelMetadata;
          
       begin
          Put_Line ("Model:");
+         
          Get_Metadata (Session, Model_Metadata);
+         
+         Put_Line ("Producer Name:" & ASCII.HT &
+                     Producer_Name (Model_Metadata));
       end;
    
    end loop;
