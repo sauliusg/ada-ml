@@ -11,9 +11,7 @@ package body ONNX_Runtime.Sessions.Metadata is
       Session : ONNX_Runtime.Sessions.Session
      ) return access OrtModelMetadata
    is
-      Local_Metadata : aliased OrtModelMetadata;
-      Local_Metadata_Access : aliased access OrtModelMetadata :=
-        Local_Metadata'Access;
+      Local_Metadata_Access : aliased access OrtModelMetadata;
    begin
       Check_Status 
         (API.SessionGetModelMetadata
