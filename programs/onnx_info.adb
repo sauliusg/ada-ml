@@ -32,7 +32,7 @@ begin
          
          Model_File_Name : constant String := Argument (I);
          
-         Session : ONNX_Runtime.Sessions.Session :=
+         Session : constant ONNX_Runtime.Sessions.Session :=
            Env.Create_Session (Model => Model_File_Name);
          
       begin
