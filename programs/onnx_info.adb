@@ -2,14 +2,10 @@ pragma Ada_2022;
 
 with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-with Ada.Float_Text_IO;   use Ada.Float_Text_IO;
 with Ada.Command_Line;    use Ada.Command_Line;
-with Ada.Exceptions;      use Ada.Exceptions;
 
 with ONNX_Runtime.Environments;
 with ONNX_Runtime.Sessions;
-with ONNX_Runtime.Values; use ONNX_Runtime.Values;
-with ONNX_Runtime.C_API;  use ONNX_Runtime.C_API;
 
 with ONNX_Runtime.Sessions.Metadata;
 use  ONNX_Runtime.Sessions.Metadata;
