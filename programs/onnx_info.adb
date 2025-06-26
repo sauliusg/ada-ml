@@ -46,7 +46,11 @@ begin
                      Graph_Name (Session));
          
          Put ("Input Count:" & ASCII.HT);
-         Put (Session_Input_Count (Session));
+         Put (Session_Input_Count (Session), Width => 0);
+         New_Line;
+         
+         Put ("Output Count:" & ASCII.HT);
+         Put (Session_Output_Count (Session), Width => 0);
          New_Line;
          
          New_Line;
