@@ -1,21 +1,12 @@
 pragma Style_Checks (Off);
 
-with Ada.Unchecked_Conversion;
 with Interfaces.C.Strings;
 with System;
 
+with ONNX_Runtime.Allocators; use ONNX_Runtime.Allocators;
+
 package body ONNX_Runtime.Sessions.Metadata is
    
-   function Cast is new Ada.Unchecked_Conversion
-     (Interfaces.C.Strings.chars_ptr, System.Address);
-   
-   function Get_Allocator return access ONNX_Runtime.C_API.OrtAllocator is
-   begin
-      return Result : access ONNX_Runtime.C_API.OrtAllocator do
-        Check_Status (API.GetAllocatorWithDefaultOptions (Result'Address));
-      end return;
-   end Get_Allocator;
-
    function Producer_Name (S : Session) return String
    is
 
