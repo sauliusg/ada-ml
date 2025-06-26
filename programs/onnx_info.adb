@@ -12,7 +12,10 @@ with ONNX_Runtime.Values; use ONNX_Runtime.Values;
 with ONNX_Runtime.C_API;  use ONNX_Runtime.C_API;
 
 with ONNX_Runtime.Sessions.Metadata;
-use ONNX_Runtime.Sessions.Metadata;
+use  ONNX_Runtime.Sessions.Metadata;
+
+with ONNX_Runtime.Sessions.Functions;
+use  ONNX_Runtime.Sessions.Functions;
 
 procedure ONNX_Info is
 
@@ -41,6 +44,12 @@ begin
          
          Put_Line ("Graph Name:" & ASCII.HT &
                      Graph_Name (Session));
+         
+         Put ("Input Count:" & ASCII.HT);
+         Put (Session_Input_Count (Session));
+         New_Line;
+         
+         New_Line;
       end;
    
    end loop;

@@ -29,7 +29,7 @@ package body ONNX_Runtime.Sessions.Metadata is
    begin
       Model_Metadata := Get_Metadata (S);
          
-      Check_Status 
+      Check_Status
         (API.ModelMetadataGetProducerName
            (
             Model_Metadata,
