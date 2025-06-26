@@ -57,6 +57,14 @@ begin
             New_Line;
          end loop;
          
+         for I in 0 .. Session_Output_Count (Session) - 1 loop
+            Put ("Output Name ");
+            Put (I, 0);
+            Put (":" & ASCII.HT);
+            Put (Session_Output_Name (Session, I));
+            New_Line;
+         end loop;
+         
          New_Line;
       end;
    
