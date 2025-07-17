@@ -90,7 +90,8 @@ begin
                   Get_Data(Output(1), Encoded);
                   Put_Line("First 10 encoder output floats:");
                   for I in Element_Index range 1 .. 10 loop
-                     Put(Encoded(I), Fore => 1, Aft => 6, Exp => 0);
+                     Put (Encoded(I), Fore => 1, Aft => 6, Exp => 0);
+                     Put (" ");
                   end loop;
                   New_Line;
                end;
