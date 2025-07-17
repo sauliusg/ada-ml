@@ -20,7 +20,8 @@ project Ada_ML is
       "mnist_info",
       "mnist2pgm",
       "cora_predictions",
-      "onnx_info"
+      "onnx_info",
+      "texteller_encode"
      );
 
    package Compiler is
