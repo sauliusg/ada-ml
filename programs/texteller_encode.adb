@@ -88,10 +88,14 @@ begin
                   Encoded : Float_Array(Element_Index range 1 .. 602880);
                begin
                   Get_Data(Output(1), Encoded);
-                  Put_Line("First 10 encoder output floats:");
-                  for I in Element_Index range 1 .. 10 loop
-                     Put (Encoded(I), Fore => 1, Aft => 6, Exp => 0);
-                     Put (" ");
+                  -- Put_Line("First 10 encoder output floats:");
+                  for I in Encoded'Range loop
+                     Put (Encoded(I), Fore => 2, Aft => 6, Exp => 0);
+                     if I mod 16 /= 0 then
+                        Put (" ");
+                     else
+                        New_Line;
+                     end if;
                   end loop;
                   New_Line;
                end;
